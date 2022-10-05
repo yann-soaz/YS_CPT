@@ -1,0 +1,17 @@
+{
+    "name": "yann-soaz/ys_cpt",
+    "description": "code to add custom post type to wordpress theme or plugin",
+    "license": "GNU GPLv3",
+    "autoload": {
+        "psr-4": {
+            "YannSoaz\\YsCpt\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "yann-soaz",
+            "email": "jfbillot@yann-soaz.fr"
+        }
+    ],
+    "require": {}
+}
