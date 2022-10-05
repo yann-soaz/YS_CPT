@@ -1,8 +1,9 @@
 <?php
-use YS_PostType;
+namespace YannSoaz\YsCpt;
+use YannSoaz\YsCpt\YS_PostType;
 
 /**
- * Class a instanciation unique pour gérer la création de "custom post type" dans les thèmes et plugins wordpress
+ * Class à instanciation unique pour gérer la création de "custom post type" dans les thèmes et plugins wordpress
  */
 class YS_PostTypeManager {
     /**
@@ -12,6 +13,7 @@ class YS_PostTypeManager {
    */
   private static ?YS_PostTypeManager $_instance = null;
   private array $postTypes = [];
+  private array $taxs = [];
 
   /**
    * Constructeur
@@ -26,9 +28,9 @@ class YS_PostTypeManager {
     * si elle n'existe pas encore puis la retourne.
     *
     * @param void
-    * @return Ys_PostType
+    * @return YS_PostTypeManager
     */
-    public static function get () {
+    public static function get (): YS_PostTypeManager {
     if (is_null(self::$_instance)) {
       self::$_instance = new self;
     }
@@ -36,7 +38,17 @@ class YS_PostTypeManager {
   }
 
   /**
-   * Ajoute un type de contenu a enregistrer
+   * Ajoute un type de contenu à enregistrer
+   * @param string $slug
+   * @return YS_Taxonomy
+   */
+  public function addTaxonomy (string $slug): YS_Taxonomy {
+    $this->taxs[] = new YS_Taxonomy($slug);
+    return $this->taxs[(sizeof($this->taxs) - 1)];
+  }
+
+  /**
+   * Ajoute une Taxonomie à enregistrer
    * @param string $slug
    * @return Ys_PostType
    */
@@ -45,9 +57,15 @@ class YS_PostTypeManager {
     return $this->postTypes[(sizeof($this->postTypes) - 1)];
   }
 
-  private function registerCTP () {
+  /**
+   * Enregistrement automatique des post types renseigné dans le hook init
+   */
+  public function registerCTP (): void {
     foreach($this->postTypes as $cpt) {
       $cpt->register();
+    }
+    foreach($this->taxs as $tax) {
+      $tax->register();
     }
   }
 }

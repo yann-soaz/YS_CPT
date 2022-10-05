@@ -1,6 +1,14 @@
 {
     "name": "yann-soaz/ys_cpt",
     "description": "code to add custom post type to wordpress theme or plugin",
+    "keywords": [
+        "wordpress",
+        "custom post type",
+        "cpt",
+        "taxonomy",
+        "helper"
+    ],
+    "version": "1.0.0",
     "license": "GPL-3.0-or-later",
     "autoload": {
         "psr-4": {
@@ -10,7 +18,9 @@
     "authors": [
         {
             "name": "yann-soaz",
-            "email": "jfbillot@yann-soaz.fr"
+            "email": "jfbillot@yann-soaz.fr",
+            "homepage": "https://yann-soaz.fr",
+            "role": "Developer"
         }
     ],
     "require": {}

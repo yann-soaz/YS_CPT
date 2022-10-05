@@ -1,4 +1,6 @@
 <?php
+namespace YannSoaz\YsCpt;
+
 class YS_PostType {
   private array $menu_order = [
     'dashboard' => 2,
@@ -16,7 +18,6 @@ class YS_PostType {
   private string $slug = '';
   private array $labels = [];
   private array $args = [];
-  private ?callable $onSave = null;
 
   /**
    * Construit les types de contenus
@@ -38,26 +39,26 @@ class YS_PostType {
       'not_found'          => "aucun $this->slug trouvé",
       'not_found_in_trash' => "aucun $this->slug trouvé dans la corbeille'",
       'parent_item_colon'  => "$this->slug parent :'",
-      'menu_name'          => "$this->slug trouvé'",
+      'menu_name'          => "$this->slug",
     ];
     $this->args = [
-		'hierarchical'        => true,
-		'description'         => 'description',
-		'taxonomies'          => [],
-		'public'              => true,
-		'show_ui'             => true,
-		'show_in_menu'        => true,
-		'menu_position'       => 5,
-		'show_in_nav_menus'   => true,
-		'publicly_queryable'  => true,
-		'exclude_from_search' => false,
-    'show_in_rest'        => true,
-		'has_archive'         => true,
-		'query_var'           => true,
-		'can_export'          => true,
-		'rewrite'             => true,
-		'capability_type'     => 'post', 
-		'supports'            => [
+      'hierarchical'        => true,
+      'description'         => 'description',
+      'taxonomies'          => [],
+      'public'              => true,
+      'show_ui'             => true,
+      'show_in_menu'        => true,
+      'menu_position'       => 5,
+      'show_in_nav_menus'   => true,
+      'publicly_queryable'  => true,
+      'exclude_from_search' => false,
+      'show_in_rest'        => true,
+      'has_archive'         => true,
+      'query_var'           => true,
+      'can_export'          => true,
+      'rewrite'             => true,
+      'capability_type'     => 'post', 
+      'supports'            => [
         'title', 'editor', 'author', 'thumbnail', 
         'custom-fields', 'trackbacks', 'comments', 
         'revisions', 'page-attributes', 'post-formats'
@@ -71,20 +72,21 @@ class YS_PostType {
    * @param ?string plural ajoute un s à la fin du mot par défaut
    * @param string faminin si le mot est féminin pour ajuster les labels
    */
-  public function generateLabels (string $singular, ?string $plural, bool $feminin = false) {
+  public function generateLabels (string $singular, ?string $plural = null, bool $feminin = false): YS_postType {
+    $plural = (is_null($plural)) ? $singular+'s' : $plural;
     $this->labels = [
-      'name'               => (is_null($plural)) ? $singular+'s' : $plural,
+      'name'               => $plural,
       'singular_name'      => $singular,
       'add_new'            => sprintf("Ajouter %s %s.",( ($feminin) ? 'une nouvelle' : 'un nouveau' ), $singular),
       'add_new_item'       => sprintf("Ajouter %s %s.",( ($feminin) ? 'une nouvelle' : 'un nouveau' ), $singular),
       'edit_item'          => sprintf( 'Modifier %s %s.', ( ($feminin) ? 'la' : 'le' ), $singular ),
       'new_item'           => sprintf("%s %s.",( ($feminin) ? 'Nouvelle' : 'Nouveau' ), $singular),
-      'view_item'          => sprintf("Voir %s %s %s.",( ($feminin) ? 'la' : 'le' ), $singular),
-      'search_items'       => sprintf( 'Rechercher des %s.', ((is_null($plural)) ? $singular+'s' : $plural) ),
+      'view_item'          => sprintf("Voir %s %s.",( ($feminin) ? 'la' : 'le' ), $singular),
+      'search_items'       => sprintf( 'Rechercher des %s.', $plural),
       'not_found'          => sprintf("%s %s %s.",( ($feminin) ? 'Aucune' : 'Aucun' ), $singular, (($feminin) ? 'trouvée' : 'trouvé') ),
       'not_found_in_trash' => sprintf("%s %s %s dans la corbeille.",( ($feminin) ? 'Aucune' : 'Aucun' ), $singular, (($feminin) ? 'trouvée' : 'trouvé') ),
       'parent_item_colon'  => sprintf("%s %s :", $singular, ( ($feminin) ? 'parente' : 'parent' ) ),
-      'menu_name'          => sprintf("%s %s.", ((is_null($plural)) ? $singular+'s' : $plural), (($feminin) ? 'trouvées' : 'trouvés') ),
+      'menu_name'          => $plural
     ];
     return $this;
   }
@@ -92,7 +94,7 @@ class YS_PostType {
   /**
    * Renseigne les labels de wordpress
    */
-  public function setLabels (array $labels) {
+  public function setLabels (array $labels): YS_postType {
     $this->label = array_merge($this->labels, $labels);
     return $this;
   }
@@ -100,7 +102,7 @@ class YS_PostType {
   /**
    * Renseigne les arguments de base des CPTs de wordpress
    */
-  public function setArgs (array $labels) {
+  public function setArgs (array $labels): YS_postType {
     $this->label = array_merge($this->args, $labels);
     return $this;
   }
@@ -109,7 +111,7 @@ class YS_PostType {
    * Pose le menu de contenu avant un élément de l'admin wordpress
    * @param string $item __ dashboard,posts,media,links,pages,comments,appearances,plugins,users,tools,settings
    */
-  public function menuBefore (string $item) {
+  public function menuBefore (string $item): YS_postType {
     if (!in_array($item, array_keys($this->menu_order)))
       $item = 'post';
 
@@ -121,7 +123,7 @@ class YS_PostType {
    * Pose le menu de contenu après un élément de l'admin wordpress
    * @param string $item __ dashboard,posts,media,links,pages,comments,appearances,plugins,users,tools,settings
    */
-  public function menuAfter (string $item) {
+  public function menuAfter (string $item): YS_postType {
     if (!in_array($item, array_keys($this->menu_order)))
       $item = 'post';
 
@@ -133,7 +135,7 @@ class YS_PostType {
    * Ajoute une icone au Custom Post Type
    * @param string $item __ dashboard,posts,media,links,pages,comments,appearances,plugins,users,tools,settings
    */
-  public function menuIcon (string $icon) {
+  public function menuIcon (string $icon): YS_postType {
     $this->args['menu_icon'] = $icon;
     return $this;
   }
@@ -145,8 +147,9 @@ class YS_PostType {
    * @return string
    */
   private function verifySlug (string $text): string {
-    if (!preg_match('/[a-z]{1}[a-z0-9\-]*/i', $text)) {
-      $text = $this->slugify($text);
+    $slugText = $this->slugify($text);
+    if ($text !== $slugText) {
+      $text = $slugText;
       trigger_error('Le slug renseigné est invalide, il sera remplacé par : '.$text, E_USER_WARNING);
     }
     return $text;
@@ -177,10 +180,30 @@ class YS_PostType {
     return $text;
   }
 
-  public function register () {
+  /**
+   * Récupère le slug du custom post type
+   */
+  public function getslug (): string {
+    return $this->slug;
+  }
+
+  /**
+   * Enregistre le custom post type dans wordpress
+   */
+  public function register (): void {
     $params = $this->args;
     $params['labels'] = $this->labels;
     register_post_type( $this->slug, $params );
+  }
+
+  /**
+   * Permet d'utiliser le hook save de wordpress du custom post type.
+   * @param callable $actionEffect _ fonction avec trois paramètres : $post_id, $post, $update
+   * @return void
+   */
+  public function onSave (callable $actionEffect, int $priority = 10): void {
+    $actionName = "save_post_{$this->slug}";
+    add_action($actionName, $actionEffect, $priority, 3);
   }
 
 }
