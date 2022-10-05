@@ -1,7 +1,7 @@
 {
     "name": "yann-soaz/ys_cpt",
     "description": "code to add custom post type to wordpress theme or plugin",
-    "license": "GNU GPLv3",
+    "license": "GPL-3.0-or-later",
     "autoload": {
         "psr-4": {
             "YannSoaz\\YsCpt\\": "src/"
