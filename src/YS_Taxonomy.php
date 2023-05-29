@@ -129,7 +129,7 @@ class YS_Taxonomy {
     $slugText = $this->slugify($text);
     if ($text !== $slugText) {
       $text = $slugText;
-      trigger_error('Le slug renseigné est invalide, il sera remplacé par : '.$text, E_USER_WARNING);
+      // trigger_error('Le slug renseigné est invalide, il sera remplacé par : '.$text, E_USER_WARNING);
     }
     return $text;
   }

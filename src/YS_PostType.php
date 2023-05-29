@@ -73,7 +73,7 @@ class YS_PostType {
    * @param string faminin si le mot est féminin pour ajuster les labels
    */
   public function generateLabels (string $singular, ?string $plural = null, bool $feminin = false): YS_postType {
-    $plural = (is_null($plural)) ? $singular+'s' : $plural;
+    $plural = (is_null($plural)) ? $singular.'s' : $plural;
     $this->labels = [
       'name'               => $plural,
       'singular_name'      => $singular,
@@ -150,7 +150,7 @@ class YS_PostType {
     $slugText = $this->slugify($text);
     if ($text !== $slugText) {
       $text = $slugText;
-      trigger_error('Le slug renseigné est invalide, il sera remplacé par : '.$text, E_USER_WARNING);
+      // trigger_error('Le slug renseigné est invalide, il sera remplacé par : '.$text, E_USER_WARNING);
     }
     return $text;
   }

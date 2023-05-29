@@ -20,7 +20,9 @@ class YS_PostTypeManager {
    * La construction ne peut se faire d'en interne.
    */
   private function __construct () {
-    add_action( 'init', [$this, 'registerCTP'] );
+    if (function_exists('add_action')) {
+      add_action( 'init', [$this, 'registerCTP'] );
+    }
   }
 
    /**
