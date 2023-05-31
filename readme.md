@@ -93,14 +93,26 @@ $cadeaux = ($cpt->addPostType('cadeau'))
 ```
 *liste des icones disponnible : https://developer.wordpress.org/resource/dashicons* 
 
+**récupérer le slug d'un CPT**
+```php
+$cadeaux = $cpt->addPostType('cadeau');
+$cadeaux->getSlug();
+```
 
-**paramétrage du type de contenu**
+**Ajouter une ou plusieurs action à la sauvegarde d'un contenu**
+```php
+$cadeaux = $cpt->addPostType('cadeau');
+$cadeaux->getSlug();
+```
+
+**paramétrage personnalisé du type de contenu**
 ```php
 $eaux = ($cpt->addPostType('eaux'))
                 ->setArgs([
                     'taxonomies' => ['categories', 'tags']
                 ]);
 ```
+
 les arguments de base des contenus sont : 
 ```php
     $this->args = [
@@ -128,14 +140,84 @@ les arguments de base des contenus sont :
     ];
 ```
 
-**récupérer le slug d'un CPT**
-```php
-$cadeaux = $cpt->addPostType('cadeau');
-$cadeaux->getSlug();
-```
 
 ### création d'une taxonomie :
 
+#### basique
+
 ```php
     $cpt->addTaxonomy('type_projet')
+```
+
+#### avancée
+
+**Ajouter à un type de contenu**
+```php
+    $cadeaux = $cpt->addPostType('cadeau');
+
+    $type_projet = $cpt->addTaxonomy('type_projet');
+    $type_projet->addPostTypes('page', 'post', $cadeaux->getSlug());
+```
+
+**Retirer la hiérarchisation des termes de taxonomie**
+```php
+    $type_projet = $cpt->addTaxonomy('type_projet');
+    $type_projet->isTag();
+```
+
+**Générer les labels**
+La génération des labels se fait de la même mannière que pour les types de contenus
+
+```php
+    $methodo = $cpt->addTaxonomy('methodo');
+    $methodo->generateLabels('méthodologie', 'méthodologies', true); // singulier, pluriel, féminin (bool)
+```
+Personnaliser les labels
+```php
+    $methodo = $cpt->addTaxonomy('methodo');
+    $methodo->setLabels([
+      'new_item_name' => 'Nom de la nouvelle méthodologie.'
+    ]);
+```
+Labels par défaut :
+```php
+    $this->labels = [
+      'name' => $plural,
+      'singular_name' => $singular,
+      'search_items' =>  'rechercher des '.$plural,
+      'all_items' => 'Toutes les '.$plural,
+      'parent_item' => sprintf("%s %s", $singular, ( ($feminin) ? 'parente' : 'parent' ) ),
+      'parent_item_colon' => sprintf("%s %s :", $singular, ( ($feminin) ? 'parente' : 'parent' ) ),
+      'edit_item' => sprintf( 'Modifier %s %s.', ( ($feminin) ? 'la' : 'le' ), $singular ),
+      'update_item' => sprintf( 'Mettre à jour %s %s.', ( ($feminin) ? 'la' : 'le' ), $singular ),
+      'add_new_item' => sprintf("Ajouter %s %s.",( ($feminin) ? 'une nouvelle' : 'un nouveau' ), $singular),
+      'new_item_name' => 'Nouveau nom de '.$singular,
+      'menu_name' => $plural,
+      'popular_items' => $plural.' populaires',
+      'separate_items_with_commas' => 'Séparez les '.$plural.' par des virgules.',
+      'add_or_remove_items' => 'Ajouter ou supprimer des '.$plural,
+      'choose_from_most_used' => sprintf( 'Choisissez les %s les plus %s.', $plural, ( ($feminin) ? 'utilisées' : 'utilisés' )),
+      'not_found' => sprintf( '%s %s %s.', ( ($feminin) ? 'aucunes' : 'aucun' ), $singular, ( ($feminin) ? 'Trouvée' : 'trouvé' ) ),
+    ];
+```
+
+**Personnaliser la taxonomie**
+```php
+    $methodo = $cpt->addTaxonomy('methodo');
+    $methodo->setArgs([
+      'show_in_rest' => false
+    ]);
+```
+Arguments par défaut :
+```php
+    [
+      // Hierarchical taxonomy (like categories)
+      'hierarchical' => true,
+      'show_in_rest' => true,
+      // Control the slugs used for this taxonomy
+      'rewrite' => [
+        'slug' => $this->slug, // This controls the base slug that will display before each term
+        'hierarchical' => true // This will allow URL's like "/locations/boston/cambridge/"
+      ]
+    ];
 ```
