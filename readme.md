@@ -8,8 +8,7 @@ Plugin permettant de générer avec aisance des types de contenu personnalisés 
 Installez le projet avec composer dans votre thème ou votre plugin.
 
 ```bash
-  npm install my-project
-  cd my-project
+  composer require yann-soaz/ys_cpt
 ```
 
 Si ce n'est pas déjà fait, importez l'autoload :
