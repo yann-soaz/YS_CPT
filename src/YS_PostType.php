@@ -171,7 +171,7 @@ class YS_PostType {
     // trim
     $text = trim($text, $divider);
     // remove duplicate divider
-    $text = preg_replace('~-+~', $divider, $text);
+    $text = preg_replace("~$divider+~", $divider, $text);
     // lowercase
     $text = strtolower($text);
     if (empty($text)) {
