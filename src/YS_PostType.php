@@ -25,8 +25,8 @@ class YS_PostType {
    * @param array args
    * @return string
    */
-  public function __construct (string $slug) {
-    $this->slug = $this->verifySlug($slug);
+  public function __construct (string $slug, string $slugSeparator = '-') {
+    $this->slug = $this->verifySlug($slug, $slugSeparator);
     $this->labels = [
       'name'               => "$this->slug",
       'singular_name'      => "$this->slug",
@@ -146,8 +146,8 @@ class YS_PostType {
    * @param string text
    * @return string
    */
-  private function verifySlug (string $text): string {
-    $slugText = $this->slugify($text);
+  private function verifySlug (string $text, string $divider): string {
+    $slugText = $this->slugify($text, $divider);
     if ($text !== $slugText) {
       $text = $slugText;
       // trigger_error('Le slug renseigné est invalide, il sera remplacé par : '.$text, E_USER_WARNING);
