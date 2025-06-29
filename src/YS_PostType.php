@@ -95,7 +95,7 @@ class YS_PostType {
    * Renseigne les labels de wordpress
    */
   public function setLabels (array $labels): YS_postType {
-    $this->label = array_merge($this->labels, $labels);
+    $this->labels = array_merge($this->labels, $labels);
     return $this;
   }
 
@@ -103,7 +103,7 @@ class YS_PostType {
    * Renseigne les arguments de base des CPTs de wordpress
    */
   public function setArgs (array $labels): YS_postType {
-    $this->label = array_merge($this->args, $labels);
+    $this->args = array_merge($this->args, $labels);
     return $this;
   }
 

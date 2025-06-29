@@ -49,7 +49,7 @@ class YS_Taxonomy {
    * Met à jour la liste des arguments pour la création de la taxonomie
    */
   public function setArgs (array $args): YS_Taxonomy {
-    $this->labels = array_merge($this->args, $args);
+    $this->args = array_merge($this->args, $args);
     return $this;
   }
 
